@@ -7,6 +7,7 @@ export const revalidate = 0; // always fresh
 export default async function LogsPage() {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  const isAdmin = user?.email === "anvilbotics@gmail.com";
 
   const { data: projects } = await supabase
     .from("projects")
@@ -31,9 +32,9 @@ export default async function LogsPage() {
         <h1 className="font-mono text-3xl md:text-4xl font-bold text-off-white">Project Logs</h1>
         <p className="text-ash text-sm mt-2 max-w-xl">
           Every project ANVIL is running, with a full timestamped log of progress.
-          {user
-            ? " You're signed in — you can post log entries below."
-            : " Members can sign in to post log entries."}
+          {isAdmin
+            ? " Logged in as admin — you can post log entries below."
+            : " Log entries are posted by the ANVIL team."}
         </p>
       </div>
 
@@ -48,7 +49,7 @@ export default async function LogsPage() {
               key={project.id}
               project={project}
               logs={logsByProject[project.id] ?? []}
-              isAuthenticated={!!user}
+              isAuthenticated={isAdmin}
               authorName={user?.email ?? ""}
             />
           ))}

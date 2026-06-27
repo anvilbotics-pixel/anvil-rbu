@@ -3,105 +3,335 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────────
+   KEYFRAMES  (defined here so inline styles
+   can reference them without Tailwind JIT)
+───────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes glow {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.9; }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes borderPulse {
+  0%, 100% { border-color: rgba(184,115,51,0.2); }
+  50%       { border-color: rgba(184,115,51,0.6); }
+}
+
+/* ─────────────────────────────────────────────
+   CSS VARIABLES
+───────────────────────────────────────────── */
 @layer base {
   :root {
     --nav-h: 64px;
+    --copper-gradient: linear-gradient(
+      135deg,
+      #5C3010 0%,
+      #B87333 25%,
+      #E8C060 48%,
+      #F5D880 50%,
+      #E8C060 52%,
+      #B87333 75%,
+      #5C3010 100%
+    );
+    --gold-gradient: linear-gradient(
+      135deg,
+      #5A3E08 0%,
+      #C9952A 30%,
+      #F0D060 50%,
+      #C9952A 70%,
+      #5A3E08 100%
+    );
+    --copper-glow: 0 0 40px rgba(184, 115, 51, 0.15),
+                   0 0 80px rgba(184, 115, 51, 0.05);
   }
+
   * { box-sizing: border-box; }
+
   html { scroll-behavior: smooth; }
+
   body {
     @apply bg-iron-black text-off-white font-sans;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  ::selection { @apply bg-forge-red text-off-white; }
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { @apply bg-iron-dark; }
-  ::-webkit-scrollbar-thumb { @apply bg-iron-border rounded; }
+
+  ::selection {
+    background: rgba(184, 115, 51, 0.25);
+    color: #F0F0EC;
+  }
+
+  ::-webkit-scrollbar       { width: 2px; }
+  ::-webkit-scrollbar-track { background: #0A0A09; }
+  ::-webkit-scrollbar-thumb { background: #2E2E2B; border-radius: 99px; }
 }
 
+/* ─────────────────────────────────────────────
+   COMPONENTS
+───────────────────────────────────────────── */
 @layer components {
-  /* NAV */
+
+  /* ── METALLIC TEXT ── */
+  .text-metallic-copper {
+    background: var(--copper-gradient);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-metallic-copper-animate {
+    background: var(--copper-gradient);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s linear infinite;
+  }
+  .text-metallic-gold {
+    background: var(--gold-gradient);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── NAV ── */
   .nav-link {
-    @apply font-mono text-xs tracking-widest uppercase text-ash
-           hover:text-off-white transition-colors duration-200 relative;
+    @apply font-mono text-[0.6rem] tracking-[0.25em] uppercase text-ash
+           transition-colors duration-300 relative pb-0.5;
   }
-  .nav-link.active { @apply text-off-white; }
-  .nav-link.active::after {
+  .nav-link::after {
     content: '';
-    @apply absolute -bottom-1 left-0 right-0 h-px bg-forge-red;
+    @apply absolute bottom-0 left-0 w-0 h-px transition-all duration-300;
+    background: var(--copper-gradient);
   }
+  .nav-link:hover { @apply text-off-white; }
+  .nav-link:hover::after  { @apply w-full; }
+  .nav-link.active { @apply text-off-white; }
+  .nav-link.active::after { @apply w-full; }
 
-  /* EYEBROW */
+  /* ── EYEBROW ── */
   .eyebrow {
-    @apply font-mono text-[0.65rem] tracking-[0.2em] uppercase text-forge-red;
+    @apply font-mono text-[0.58rem] tracking-[0.28em] uppercase;
+    color: #B87333;
   }
 
-  /* CARDS */
+  /* ── ACCENT LINE ── */
+  .accent-line {
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--copper-gradient);
+    margin-bottom: 1.25rem;
+  }
+
+  /* ── DIVIDERS ── */
+  .divider {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #2E2E2B 20%, #2E2E2B 80%, transparent);
+  }
+  .divider-copper {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(184,115,51,0.3) 20%, rgba(184,115,51,0.3) 80%, transparent);
+  }
+
+  /* ── CARDS ── */
   .card {
     @apply bg-iron-mid border border-iron-border p-6
-           transition-colors duration-200 hover:border-iron-light;
+           transition-all duration-300 hover:border-iron-border-light;
   }
-  .card-accent { @apply border-l-2 border-l-forge-red; }
-  .card-gold   { @apply border-l-2 border-l-gold; }
+  .card-accent { border-left: 1px solid #B87333; }
+  .card-gold   { border-left: 1px solid #C9952A; }
 
-  /* BUTTONS */
+  .card-premium {
+    @apply bg-iron-mid/40 border border-iron-border p-8
+           transition-all duration-500 relative overflow-hidden;
+  }
+  .card-premium:hover {
+    border-color: rgba(184, 115, 51, 0.35);
+    box-shadow: var(--copper-glow);
+  }
+
+  /* ── STAT NUMBER ── */
+  .stat-number {
+    @apply font-mono font-bold leading-none;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    background: var(--copper-gradient);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── BUTTONS ── */
   .btn {
-    @apply inline-flex items-center gap-2 font-mono text-xs tracking-widest
-           uppercase px-5 py-2.5 border transition-all duration-200 cursor-pointer;
+    @apply inline-flex items-center gap-2 font-mono text-[0.6rem] tracking-[0.22em]
+           uppercase px-5 py-3 border transition-all duration-300 cursor-pointer;
   }
   .btn-primary {
-    @apply bg-forge-red border-forge-red text-off-white
-           hover:bg-transparent hover:text-forge-red;
+    background: var(--copper-gradient);
+    @apply border-transparent text-iron-black font-bold
+           hover:bg-none hover:border-copper hover:text-copper;
   }
   .btn-ghost {
     @apply bg-transparent border-iron-border text-ash
-           hover:border-off-white hover:text-off-white;
+           hover:border-copper/50 hover:text-off-white;
   }
   .btn-gold {
     @apply bg-transparent border-gold text-gold
            hover:bg-gold hover:text-iron-black;
   }
+  .btn-outline-copper {
+    @apply bg-transparent text-copper;
+    border: 1px solid rgba(184,115,51,0.4);
+  }
+  .btn-outline-copper:hover {
+    border-color: #B87333;
+    background: rgba(184,115,51,0.08);
+  }
 
-  /* TAGS */
+  /* ── TAGS ── */
   .tag {
-    @apply inline-block font-mono text-[0.6rem] tracking-widest uppercase
+    @apply inline-block font-mono text-[0.52rem] tracking-[0.22em] uppercase
            px-2 py-0.5 border;
   }
-  .tag-red   { @apply border-forge-red text-forge-red; }
-  .tag-gold  { @apply border-gold text-gold; }
-  .tag-ash   { @apply border-iron-border text-ash; }
-  .tag-green { @apply border-[#5BA85A] text-[#5BA85A]; }
+  .tag-red    { @apply border-forge-red/50 text-forge-red; }
+  .tag-gold   { @apply border-gold/50 text-gold; }
+  .tag-ash    { @apply border-iron-border text-ash; }
+  .tag-green  { @apply border-[#5BA85A]/50 text-[#5BA85A]; }
+  .tag-copper { border-color: rgba(184,115,51,0.5); color: #B87333; }
 
-  /* STATUS DOTS */
-  .dot-active   { @apply inline-block w-2 h-2 rounded-full bg-[#5BA85A] animate-pulse; }
-  .dot-paused   { @apply inline-block w-2 h-2 rounded-full bg-gold; }
-  .dot-complete { @apply inline-block w-2 h-2 rounded-full bg-forge-red; }
+  /* ── STATUS DOTS ── */
+  .dot-active   { @apply inline-block w-1.5 h-1.5 rounded-full bg-[#5BA85A] animate-pulse; }
+  .dot-paused   { @apply inline-block w-1.5 h-1.5 rounded-full bg-gold; }
+  .dot-complete { @apply inline-block w-1.5 h-1.5 rounded-full; background: #B87333; }
 
-  /* FORM FIELDS */
+  /* ── FORM FIELDS ── */
   .field { @apply flex flex-col gap-1.5; }
-  .field label { @apply font-mono text-[0.65rem] tracking-[0.15em] uppercase text-ash; }
+  .field label {
+    @apply font-mono text-[0.58rem] tracking-[0.22em] uppercase text-ash;
+  }
   .field input,
   .field textarea,
   .field select {
     @apply bg-iron-dark border border-iron-border text-off-white
-           px-3 py-2.5 text-sm outline-none transition-colors duration-200
-           focus:border-forge-red placeholder:text-iron-light resize-none;
+           px-4 py-3 text-sm outline-none transition-all duration-300
+           placeholder:text-ash/30 resize-none;
+  }
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    border-color: rgba(184,115,51,0.5);
+    box-shadow: 0 0 0 1px rgba(184,115,51,0.1);
   }
   .field select option { @apply bg-iron-dark; }
 
-  /* TERMINAL */
+  /* ── TERMINAL ── */
   .terminal {
     @apply bg-iron-dark border border-iron-border font-mono text-sm p-5 overflow-x-auto;
   }
 
-  /* LOG TIMELINE */
+  /* ── LOG TIMELINE ── */
   .log-line {
-    @apply border-l-2 border-iron-border pl-5 pb-6 relative;
+    @apply border-l border-iron-border pl-6 pb-8 relative;
   }
   .log-line::before {
     content: '';
-    @apply absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-iron-border;
+    @apply absolute -left-[3px] top-1.5 w-1.5 h-1.5 rounded-full bg-iron-border;
   }
-  .log-line.latest { @apply border-l-forge-red; }
-  .log-line.latest::before { @apply bg-forge-red; }
+  .log-line.latest { border-left-color: #B87333; }
+  .log-line.latest::before { background: #B87333; }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap { @apply overflow-hidden border-y border-iron-border py-3.5; }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 40s linear infinite;
+  }
+  .marquee-track:hover { animation-play-state: paused; }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal-hidden {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── GRID BACKGROUND ── */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(240,240,236,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(240,240,236,0.025) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+
+  /* ── COPPER BORDER GLOW ── */
+  .copper-glow-border {
+    border-color: rgba(184,115,51,0.15);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+  .copper-glow-border:hover {
+    border-color: rgba(184,115,51,0.45);
+    box-shadow: var(--copper-glow);
+  }
+
+  /* ── TRACKS GRID ── */
+  .track-cell {
+    @apply p-8 transition-all duration-300 relative overflow-hidden cursor-default;
+    background: #0A0A09;
+    border: 1px solid transparent;
+  }
+  .track-cell:hover {
+    background: #161614;
+    border-color: rgba(184,115,51,0.25);
+  }
+  .track-cell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(184,115,51,0.06) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .track-cell:hover::before { opacity: 1; }
+
+  /* ── HERO NUMBER ── */
+  .hero-index {
+    @apply font-mono text-[0.55rem] tracking-[0.2em] text-ash/50;
+    writing-mode: vertical-rl;
+  }
 }

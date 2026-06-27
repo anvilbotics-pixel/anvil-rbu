@@ -6,10 +6,10 @@ import Footer from "@/components/layout/Footer";
 export const metadata: Metadata = {
   title: "ANVIL — RBU Engineering & Robotics Club",
   description:
-    "Automation, Networks, Vision & Intelligent Labs. Engineering and robotics club at Ramdeobaba University, Nagpur.",
+    "Automation, Networks, Vision & Intelligent Labs. Engineering and robotics club at Ramdeobaba University, Nagpur. Building India's first student-built humanoid robot.",
   openGraph: {
     title: "ANVIL — RBU",
-    description: "Engineering & Robotics Club at Ramdeobaba University",
+    description: "Engineering & Robotics Club at Ramdeobaba University. We Design. We Code. We Build.",
     siteName: "ANVIL RBU",
   },
 };
@@ -17,9 +17,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col">
+      <body className="min-h-screen flex flex-col bg-iron-black">
         <Nav />
-        <main className="flex-1 max-w-6xl mx-auto w-full px-5 md:px-10 pt-24 pb-16">
+        <main className="flex-1 max-w-7xl mx-auto w-full px-6 md:px-12 pb-0 pt-24">
           {children}
         </main>
         <Footer />

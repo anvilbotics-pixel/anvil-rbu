@@ -69,7 +69,7 @@ export default function TransmissionLog({ initialLogs }: { initialLogs: ProjectL
               <span className="text-ash shrink-0 w-4">{i === 0 ? "▶" : " "}</span>
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-2 mb-1">
-                  <span className="text-forge-red font-mono text-xs">
+                  <span className="font-mono text-xs" style={{ color: "#B87333" }}>
                     {/* @ts-ignore */}
                     [{log.project?.codename ?? "—"}]
                   </span>
