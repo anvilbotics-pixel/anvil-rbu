@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -9,16 +10,7 @@ export default function Footer() {
         {/* Brand */}
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2.5">
-            <svg width="18" height="16" viewBox="0 0 22 20" fill="none">
-              <defs>
-                <linearGradient id="footer-copper" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%"   stopColor="#5C3010"/>
-                  <stop offset="50%"  stopColor="#D4A843"/>
-                  <stop offset="100%" stopColor="#5C3010"/>
-                </linearGradient>
-              </defs>
-              <polygon points="11,1 21,19 1,19" fill="none" stroke="url(#footer-copper)" strokeWidth="1.5" strokeLinejoin="round"/>
-            </svg>
+            <Image src="/logo.png" alt="ANVIL logo" width={28} height={28} className="rounded-full shrink-0" />
             <span className="font-mono text-sm font-bold tracking-[0.22em] text-off-white">ANVIL</span>
             <span className="font-mono text-[0.48rem] tracking-[0.18em] border border-iron-border text-ash px-1.5 py-0.5">RBU</span>
           </div>

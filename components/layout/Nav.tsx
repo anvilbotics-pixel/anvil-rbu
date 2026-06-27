@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -66,27 +67,16 @@ export default function Nav() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group" onClick={() => setOpen(false)}>
-            {/* Copper triangle mark */}
-            <svg
-              width="22" height="20" viewBox="0 0 22 20"
-              fill="none" xmlns="http://www.w3.org/2000/svg"
-              className="shrink-0"
-            >
-              <defs>
-                <linearGradient id="nav-copper" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%"   stopColor="#5C3010"/>
-                  <stop offset="45%"  stopColor="#E8C060"/>
-                  <stop offset="55%"  stopColor="#F5D880"/>
-                  <stop offset="100%" stopColor="#5C3010"/>
-                </linearGradient>
-              </defs>
-              <polygon points="11,1 21,19 1,19" fill="none" stroke="url(#nav-copper)" strokeWidth="1.5" strokeLinejoin="round"/>
-            </svg>
-
+            <Image
+              src="/logo.png"
+              alt="ANVIL logo"
+              width={32}
+              height={32}
+              className="shrink-0 rounded-full"
+            />
             <span className="font-mono text-[0.85rem] font-bold tracking-[0.22em] text-off-white transition-all duration-300 group-hover:text-metallic-copper">
               ANVIL
             </span>
-
             <span className="hidden sm:inline font-mono text-[0.48rem] tracking-[0.18em] border border-iron-border text-ash px-1.5 py-0.5 transition-colors duration-300 group-hover:border-copper/30 group-hover:text-copper">
               RBU
             </span>
